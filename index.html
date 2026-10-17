@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CloudSnap — Free Unlimited High-Speed Image Hosting CDN</title>
+  <meta name="description" content="Host unlimited images for free. Fast global CDN, direct links, HTML embed codes, BBCode for forums, and secure cloud storage.">
+  <meta name="keywords" content="free image hosting, unlimited image cdn, image target link, reddit image host, discord photo hosting">
+
+  <!-- FontAwesome Icons & Google Fonts -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Firebase v10 SDK via Compat Script -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+
+  <!-- Google AdSense / Ad Detection Bait Script -->
+  <script src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js" async onError="triggerAdBlockDetector()"></script>
+
+  <style>
+    :root {
+      --bg-dark: #090d16;
+      --card-bg: #131b2e;
+      --border-color: #232f48;
+      --primary: #38bdf8;
+      --primary-hover: #0284c7;
+      --accent: #6366f1;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+    body { background-color: var(--bg-dark); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+
+    /* Header & Navigation */
+    header { background: rgba(19, 27, 46, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100; padding: 14px 24px; display: flex; justify-between: space-between; align-items: center; }
+    .logo { font-size: 22px; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo i { color: var(--primary); }
+    .nav-right { display: flex; align-items: center; gap: 15px; }
+    .nav-link { color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 14px; cursor: pointer; transition: 0.2s; }
+    .nav-link:hover, .nav-link.active { color: var(--primary); }
+    
+    .btn-auth { background: linear-gradient(135deg, var(--primary), var(--accent)); color: #fff; border: none; padding: 10px 18px; border-radius: 8px; font-weight: 700; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.3s; }
+    .btn-auth:hover { opacity: 0.9; transform: translateY(-1px); }
+    .user-profile-btn { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+    .user-avatar { width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--primary); }
+
+    /* Ad Placement Banners */
+    .ad-banner-slot { background: var(--card-bg); border: 1px dashed var(--border-color); border-radius: 10px; text-align: center; padding: 12px; margin: 20px auto; max-width: 900px; width: 100%; min-height: 90px; display: flex; align-items: center; justify-content: center; color: #475569; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+
+    /* Main Container */
+    .main-container { max-width: 1000px; margin: 0 auto; padding: 20px; width: 100%; flex: 1; }
+
+    /* Upload Box */
+    .upload-card { background: var(--card-bg); border: 2px dashed #334155; border-radius: 16px; padding: 40px 20px; text-align: center; cursor: pointer; transition: 0.3s; position: relative; overflow: hidden; }
+    .upload-card:hover { border-color: var(--primary); background: rgba(56, 189, 248, 0.03); }
+    .upload-icon { font-size: 48px; color: var(--primary); margin-bottom: 15px; }
+    .upload-title { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+    .upload-desc { color: var(--text-muted); font-size: 13px; margin-bottom: 20px; }
+    #file-input { display: none; }
+
+    /* Upload Stats Bar */
+    .upload-counter-bar { background: #0f172a; border: 1px solid var(--border-color); border-radius: 10px; padding: 12px 18px; margin-top: 15px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: 600; }
+    .counter-badge { background: var(--accent); color: #fff; padding: 4px 10px; border-radius: 20px; font-size: 12px; }
+
+    /* Result Output Cards */
+    .result-section { margin-top: 30px; display: none; }
+    .link-group { margin-bottom: 15px; }
+    .link-label { font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; }
+    .link-input-wrapper { display: flex; gap: 8px; }
+    .link-input-wrapper input { flex: 1; background: #0f172a; border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; color: #38bdf8; font-size: 13px; outline: none; }
+    .btn-copy { background: var(--border-color); color: #fff; border: none; padding: 0 16px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+    .btn-copy:hover { background: var(--primary); }
+
+    /* Gallery Grid (Profile Page) */
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 18px; margin-top: 20px; }
+    .gallery-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden; transition: 0.3s; }
+    .gallery-card:hover { transform: translateY(-4px); border-color: var(--primary); }
+    .gallery-thumb { width: 100%; height: 160px; object-fit: cover; background: #000; }
+    .gallery-info { padding: 12px; }
+    .gallery-actions { display: flex; gap: 8px; margin-top: 8px; }
+    .btn-sm { flex: 1; padding: 8px; border-radius: 6px; border: none; font-size: 11px; font-weight: 700; cursor: pointer; }
+    .btn-sm-copy { background: var(--primary); color: #fff; }
+    .btn-sm-del { background: #ef4444; color: #fff; }
+
+    /* Modals & Overlay Locks */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(5, 8, 15, 0.95); backdrop-filter: blur(10px); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 20px; }
+    .modal-box { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; max-width: 500px; width: 100%; padding: 30px; text-align: center; position: relative; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); }
+    .close-btn { position: absolute; top: 15px; right: 15px; background: #ef4444; color: #fff; width: 32px; height: 32px; border-radius: 50%; display: none; align-items: center; justify-content: center; cursor: pointer; font-weight: 800; border: none; }
+
+    /* Gemini AI SEO Section */
+    .ai-seo-box { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 24px; margin-top: 40px; font-size: 13px; line-height: 1.6; color: var(--text-muted); }
+    .ai-seo-box h3 { color: #fff; font-size: 16px; margin-bottom: 10px; }
+
+    /* Skeleton Loading Spinner */
+    .spinner { display: inline-block; width: 30px; height: 30px; border: 3px solid rgba(255,255,255,.3); border-radius: 50%; border-top-color: var(--primary); animation: spin 1s ease-in-out infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Footer & SEO */
+    footer { background: var(--card-bg); border-top: 1px solid var(--border-color); padding: 40px 20px 20px 20px; margin-top: 60px; }
+    .footer-content { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; }
+    .footer-section h4 { color: #fff; font-size: 15px; margin-bottom: 12px; }
+    .footer-section p, .footer-section a { color: var(--text-muted); font-size: 13px; text-decoration: none; display: block; margin-bottom: 8px; }
+    .footer-bottom { max-width: 1000px; margin: 30px auto 0 auto; padding-top: 20px; border-top: 1px solid var(--border-color); text-align: center; color: var(--text-muted); font-size: 12px; }
+  </style>
+</head>
+<body>
+
+  <!-- Anti-AdBlock Modal Lock -->
+  <div id="adblockModal" class="modal-overlay">
+    <div class="modal-box">
+      <i class="fa-solid fa-shield-halved" style="font-size:50px; color:#ef4444; margin-bottom:15px;"></i>
+      <h2 style="font-size:22px; margin-bottom:10px;">AdBlocker Detected!</h2>
+      <p style="color:var(--text-muted); font-size:14px; line-height:1.6; margin-bottom:20px;">
+        Our free unlimited storage service is supported by advertisements. Please disable your AdBlocker or Brave Shield to continue using CloudSnap.
+      </p>
+      <button class="btn-auth" style="width:100%; justify-content:center;" onclick="window.location.reload()">
+        <i class="fa-solid fa-rotate-right"></i> I Have Disabled AdBlocker
+      </button>
+    </div>
+  </div>
+
+  <!-- Video Ad-Gate Modal -->
+  <div id="adGateModal" class="modal-overlay">
+    <div class="modal-box">
+      <button id="adGateCloseBtn" class="close-btn" onclick="closeAdGate()">✕</button>
+      <i class="fa-solid fa-rectangle-ad" style="font-size:40px; color:var(--primary); margin-bottom:10px;"></i>
+      <h3 style="font-size:18px; margin-bottom:8px;">Sponsor Advertisement</h3>
+      <p style="color:var(--text-muted); font-size:12px; margin-bottom:15px;">Please view the short sponsor video to unlock your direct links and next 5 uploads.</p>
+      
+      <!-- Video Ad Unit Slot -->
+      <div id="videoAdContainer" style="background:#000; min-height:220px; border-radius:12px; display:flex; align-items:center; justify-content:center; border:1px solid var(--border-color); margin-bottom:15px;">
+        <span style="color:#64748b; font-size:12px;">[ Outstream Video / Rewarded Sponsor Ad Playing... ]</span>
+      </div>
+
+      <div id="adTimerText" style="color:var(--primary); font-weight:700; font-size:13px;">
+        <i class="fa-solid fa-spinner fa-spin"></i> Unlocking links in <span id="timerSec">5</span>s...
+      </div>
+    </div>
+  </div>
+
+  <!-- Header Navigation -->
+  <header>
+    <a href="#" class="logo" onclick="switchView('home')">
+      <i class="fa-solid fa-cloud-arrow-up"></i> CloudSnap
+    </a>
+    <div class="nav-right">
+      <span class="nav-link active" id="navHome" onclick="switchView('home')">Upload Hub</span>
+      <span class="nav-link" id="navProfile" onclick="switchView('profile')">My Gallery</span>
+      
+      <div id="authContainer">
+        <button class="btn-auth" onclick="googleSignIn()">
+          <i class="fa-brands fa-google"></i> Sign In
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Top AdSense Banner Slot -->
+  <div class="ad-banner-slot">
+    <span>[ Google AdSense Top Banner Placeholder — 728x90 / Responsive ]</span>
+  </div>
+
+  <!-- Main Content Wrapper -->
+  <div class="main-container">
+    
+    <!-- PAGE 1: HOME UPLOAD HUB -->
+    <div id="homeView">
+      <div class="upload-card" onclick="document.getElementById('file-input').click()">
+        <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
+        <div class="upload-title">Drag & Drop or Click to Upload Images</div>
+        <div class="upload-desc">Supports PNG, JPG, JPEG, WEBP & GIF up to 20MB per file.</div>
+        <button class="btn-auth" style="margin: 0 auto; pointer-events: none;">Browse Files</button>
+        <input type="file" id="file-input" accept="image/*" onchange="handleFileUpload(this.files[0])">
+      </div>
+
+      <!-- Upload Counter Indicator -->
+      <div class="upload-counter-bar">
+        <span><i class="fa-solid fa-layer-group" style="color:var(--primary);"></i> Upload Usage Tracker:</span>
+        <span class="counter-badge" id="uploadCountText">0 / 5 Uploads</span>
+      </div>
+
+      <!-- Loading State Overlay -->
+      <div id="uploadLoader" style="display:none; text-align:center; margin-top:25px;">
+        <div class="spinner"></div>
+        <p style="margin-top:10px; color:var(--primary); font-weight:600; font-size:14px;">Uploading to Global Cloud CDN...</p>
+      </div>
+
+      <!-- Result Links Output Area -->
+      <div id="resultSection" class="result-section">
+        <h3 style="font-size:16px; margin-bottom:15px; color:#fff;"><i class="fa-solid fa-circle-check" style="color:#10b981;"></i> Image Uploaded Successfully!</h3>
+        
+        <div class="link-group">
+          <div class="link-label">Direct Image Link (For Browser & Sharing)</div>
+          <div class="link-input-wrapper">
+            <input type="text" id="directLink" readonly>
+            <button class="btn-copy" onclick="copyToClipboard('directLink')">Copy</button>
+          </div>
+        </div>
+
+        <div class="link-group">
+          <div class="link-label">HTML Embed Code (For Websites & Blogs)</div>
+          <div class="link-input-wrapper">
+            <input type="text" id="htmlLink" readonly>
+            <button class="btn-copy" onclick="copyToClipboard('htmlLink')">Copy</button>
+          </div>
+        </div>
+
+        <div class="link-group">
+          <div class="link-label">BBCode (For Online Forums & Communities)</div>
+          <div class="link-input-wrapper">
+            <input type="text" id="bbCodeLink" readonly>
+            <button class="btn-copy" onclick="copyToClipboard('bbCodeLink')">Copy</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gemini Dynamic AI SEO Container -->
+      <div id="aiSeoContainer" class="ai-seo-box">
+        <h3>Fast & Free Unlimited Cloud Image Hosting</h3>
+        <p>CloudSnap provides reliable, high-speed image hosting with direct links, HTML embed codes, and BBCode formatting. Designed for creators, forum members, and web developers worldwide.</p>
+      </div>
+    </div>
+
+    <!-- PAGE 2: PROFILE GALLERY -->
+    <div id="profileView" style="display:none;">
+      <h2 style="font-size:20px; font-weight:800; margin-bottom:5px;">My Upload Gallery</h2>
+      <p style="color:var(--text-muted); font-size:13px; margin-bottom:20px;">Manage your stored cloud images and retrieve share links anytime.</p>
+      
+      <div id="galleryContainer" class="gallery-grid">
+        <!-- Dynamic Gallery Cards Load Here -->
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom AdSense Banner Slot -->
+  <div class="ad-banner-slot">
+    <span>[ Google AdSense Footer Banner Placeholder — Responsive ]</span>
+  </div>
+
+  <!-- Footer SEO & Policy Sections -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h4>CloudSnap CDN</h4>
+        <p>Free unlimited cloud image hosting platform powered by high-speed global CDN node distribution.</p>
+      </div>
+      <div class="footer-section">
+        <h4>Quick Links</h4>
+        <a href="#" onclick="switchView('home')">Home Upload</a>
+        <a href="#" onclick="switchView('profile')">My Gallery</a>
+      </div>
+      <div class="footer-section">
+        <h4>Legal & Compliance</h4>
+        <a href="#" onclick="alert('Privacy Policy: We protect user privacy and do not store personal details beyond standard Firebase Auth parameters.')">Privacy Policy</a>
+        <a href="#" onclick="alert('Terms of Service: Free public hosting permitted for lawful content. DMCA requests honored immediately.')">Terms of Service</a>
+      </div>
+      <div class="footer-section">
+        <h4>System Status</h4>
+        <p><b>CDN Nodes:</b> <span style="color:#10b981;">Online (8 Active Bots)</span></p>
+        <p><b>Storage Cost:</b> 100% Free</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2026 CloudSnap. All rights reserved. Global Free Unlimited Image Hosting SaaS.
+    </div>
+  </footer>
+
+  <!-- JavaScript Application Core -->
+  <script>
+    // 1. Firebase API Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyAr1CDIRKxAc4IlRQ7KZ7JHjWQSqJwjZes",
+      authDomain: "myimagehost-8a3f4.firebaseapp.com",
+      databaseURL: "https://myimagehost-8a3f4-default-rtdb.firebaseio.com",
+      projectId: "myimagehost-8a3f4",
+      storageBucket: "myimagehost-8a3f4.firebasestorage.app",
+      messagingSenderId: "716349939295",
+      appId: "1:716349939295:web:b431d3e51f6833b2c005ea"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.database();
+
+    // 2. Google AI Studio Gemini API Key
+    const GEMINI_API_KEY = "AQ.Ab8RN6Lu8gDcC7YmvXBNoCuwv_hmJ-ANKqNJxFTL8OjfPVILiQ";
+
+    // 3. Multi-Bot Telegram CDN Configuration
+    const TELEGRAM_BOT_TOKENS = [
+      "8861972756:AAFAWUhCoD7RU1AAAqD21kWlkSXUF2yh8Xk",
+      "8925856734:AAEmUuTxCy3MvO5ZDMFU5frBLOgFp-vLddM",
+      "8716261561:AAEQFS3jR8VHI3hqvNQgEYxMUl09wMDObZM",
+      "8712311804:AAE7fm-vGvyFUGL_xjG7YdqgeOjWw8J_Cvk",
+      "8833885629:AAFF26HB3ZP9jPMEiXMaA0dxck69bRUtohA",
+      "8869262106:AAFA_dVBeWv9K6Oc1Hqn8k4p-MocsuF81Bw",
+      "8818144137:AAHVJ93ueND1MlkXoISO2cSM7xhOUvgwuE4",
+      "8985833367:AAFaROblnxP-ER7FZxrdqJFRqh9jasSpyhQ"
+    ];
+    const TELEGRAM_CHANNEL_ID = "-1004303619137";
+    let currentBotIndex = 0;
+    let currentUser = null;
+    let userUploadCount = 0;
+
+    // 4. Auth State & User Sync
+    auth.onAuthStateChanged(user => {
+      currentUser = user;
+      const authContainer = document.getElementById('authContainer');
+      
+      if (user) {
+        authContainer.innerHTML = `
+          <div class="user-profile-btn" onclick="switchView('profile')">
+            <img src="${user.photoURL}" class="user-avatar" alt="Avatar">
+            <span style="font-size:13px; font-weight:700;">${user.displayName.split(' ')[0]}</span>
+          </div>
+        `;
+        syncUserCount();
+        loadUserGallery();
+      } else {
+        authContainer.innerHTML = `
+          <button class="btn-auth" onclick="googleSignIn()">
+            <i class="fa-brands fa-google"></i> Sign In
+          </button>
+        `;
+      }
+    });
+
+    function googleSignIn() {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      auth.signInWithPopup(provider).catch(err => alert("Google Sign-In Error: " + err.message));
+    }
+
+    // 5. Anti-AdBlocker Detection
+    function triggerAdBlockDetector() {
+      document.getElementById('adblockModal').style.display = 'flex';
+    }
+
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const testAd = document.createElement('div');
+        testAd.className = 'adsbygoogle ad-zone ad-space';
+        testAd.style.height = '1px';
+        document.body.appendChild(testAd);
+        if (testAd.offsetHeight === 0) {
+          triggerAdBlockDetector();
+        }
+      }, 1000);
+
+      // Trigger AI SEO
+      fetchGeminiAISEO();
+    });
+
+    // 6. Gemini AI Studio Dynamic SEO Engine
+    async function fetchGeminiAISEO() {
+      const seoBox = document.getElementById('aiSeoContainer');
+      if (!GEMINI_API_KEY) return;
+
+      const promptText = "You are an expert SEO assistant. Write 3 short FAQ questions and answers in raw HTML format using <h3> and <p> tags for an unlimited free image hosting website named CloudSnap. Include high-CPC keywords like free image CDN, direct image link generator, and forum BBCode image host. Do NOT write markdown code blocks or backticks.";
+
+      try {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: promptText }] }]
+          })
+        });
+
+        const data = await response.json();
+        if (data.candidates && data.candidates[0].content.parts[0].text) {
+          let cleanHtml = data.candidates[0].content.parts[0].text.replace(/```html/g, '').replace(/```/g, '');
+          seoBox.innerHTML = cleanHtml;
+        }
+      } catch (err) {
+        console.log("Gemini AI SEO running on static fallback mode.");
+      }
+    }
+
+    // 7. Multi-Bot Upload Engine
+    async function handleFileUpload(file) {
+      if (!file) return;
+
+      if (userUploadCount >= 5) {
+        triggerAdGate();
+        return;
+      }
+
+      document.getElementById('uploadLoader').style.display = 'block';
+      document.getElementById('resultSection').style.display = 'none';
+
+      const botToken = TELEGRAM_BOT_TOKENS[currentBotIndex];
+      currentBotIndex = (currentBotIndex + 1) % TELEGRAM_BOT_TOKENS.length;
+
+      const formData = new FormData();
+      formData.append("chat_id", TELEGRAM_CHANNEL_ID);
+      formData.append("photo", file);
+
+      try {
+        const res = await fetch(`https://api.telegram.org/bot${botToken}/sendPhoto`, {
+          method: "POST",
+          body: formData
+        });
+        const data = await res.json();
+
+        if (data.ok) {
+          const fileId = data.result.photo[data.result.photo.length - 1].file_id;
+          
+          const fileRes = await fetch(`https://api.telegram.org/bot${botToken}/getFile?file_id=${fileId}`);
+          const fileData = await fileRes.json();
+          const filePath = fileData.result.file_path;
+          
+          const directImgUrl = `https://api.telegram.org/file/bot${botToken}/${filePath}`;
+          
+          document.getElementById('directLink').value = directImgUrl;
+          document.getElementById('htmlLink').value = `<img src="${directImgUrl}" alt="Hosted Image" />`;
+          document.getElementById('bbCodeLink').value = `[img]${directImgUrl}[/img]`;
+
+          document.getElementById('uploadLoader').style.display = 'none';
+          document.getElementById('resultSection').style.display = 'block';
+
+          userUploadCount++;
+          updateUploadCountInDB();
+
+          if (currentUser) {
+            db.ref(`galleries/${currentUser.uid}`).push({
+              url: directImgUrl,
+              timestamp: Date.now()
+            });
+          }
+
+          if (userUploadCount >= 5) {
+            triggerAdGate();
+          }
+
+        } else {
+          throw new Error("Telegram API Network Delay");
+        }
+      } catch (err) {
+        alert("Upload Error: " + err.message);
+        document.getElementById('uploadLoader').style.display = 'none';
+      }
+    }
+
+    // 8. DB Counter Sync
+    function syncUserCount() {
+      if (!currentUser) return;
+      db.ref(`users/${currentUser.uid}/uploadCount`).once('value', snapshot => {
+        userUploadCount = snapshot.val() || 0;
+        document.getElementById('uploadCountText').innerText = `${userUploadCount} / 5 Uploads`;
+      });
+    }
+
+    function updateUploadCountInDB() {
+      document.getElementById('uploadCountText').innerText = `${userUploadCount} / 5 Uploads`;
+      if (currentUser) {
+        db.ref(`users/${currentUser.uid}/uploadCount`).set(userUploadCount);
+      }
+    }
+
+    // 9. Ad-Gate Lock Trigger
+    function triggerAdGate() {
+      const modal = document.getElementById('adGateModal');
+      const closeBtn = document.getElementById('adGateCloseBtn');
+      const timerText = document.getElementById('adTimerText');
+      
+      modal.style.display = 'flex';
+      closeBtn.style.display = 'none';
+      let secLeft = 5;
+
+      const timerInterval = setInterval(() => {
+        secLeft--;
+        document.getElementById('timerSec').innerText = secLeft;
+        if (secLeft <= 0) {
+          clearInterval(timerInterval);
+          timerText.innerHTML = `<span style="color:#10b981;">✓ Link Unlocked! Click X to continue.</span>`;
+          closeBtn.style.display = 'flex';
+        }
+      }, 1000);
+    }
+
+    function closeAdGate() {
+      document.getElementById('adGateModal').style.display = 'none';
+      userUploadCount = 0;
+      updateUploadCountInDB();
+    }
+
+    // 10. Profile Gallery Loader
+    function loadUserGallery() {
+      if (!currentUser) return;
+      db.ref(`galleries/${currentUser.uid}`).on('value', snapshot => {
+        const container = document.getElementById('galleryContainer');
+        container.innerHTML = "";
+        const data = snapshot.val();
+
+        if (data) {
+          Object.keys(data).forEach(key => {
+            const item = data[key];
+            const card = document.createElement('div');
+            card.className = 'gallery-card';
+            card.innerHTML = `
+              <img src="${item.url}" class="gallery-thumb" alt="Upload">
+              <div class="gallery-info">
+                <div class="gallery-actions">
+                  <button class="btn-sm btn-sm-copy" onclick="copyText('${item.url}')">Copy Link</button>
+                  <button class="btn-sm btn-sm-del" onclick="deleteGalleryItem('${key}')">Delete</button>
+                </div>
+              </div>
+            `;
+            container.appendChild(card);
+          });
+        } else {
+          container.innerHTML = `<p style="color:var(--text-muted); grid-column:1/-1;">No images uploaded yet.</p>`;
+        }
+      });
+    }
+
+    function deleteGalleryItem(key) {
+      if (currentUser && confirm("Delete this image from gallery?")) {
+        db.ref(`galleries/${currentUser.uid}/${key}`).remove();
+      }
+    }
+
+    // 11. View Switcher & Helpers
+    function switchView(view) {
+      document.getElementById('homeView').style.display = view === 'home' ? 'block' : 'none';
+      document.getElementById('profileView').style.display = view === 'profile' ? 'block' : 'none';
+      document.getElementById('navHome').classList.toggle('active', view === 'home');
+      document.getElementById('navProfile').classList.toggle('active', view === 'profile');
+    }
+
+    function copyToClipboard(elementId) {
+      const input = document.getElementById(elementId);
+      input.select();
+      document.execCommand('copy');
+      alert('Link copied to clipboard!');
+    }
+
+    function copyText(text) {
+      navigator.clipboard.writeText(text);
+      alert('Link copied to clipboard!');
+    }
+  </script>
+</body>
+  </html>
