@@ -7,6 +7,12 @@
   <meta name="description" content="Host unlimited images for free. Fast global CDN, direct links, HTML embed codes, BBCode for forums, and secure cloud storage.">
   <meta name="keywords" content="free image hosting, unlimited image cdn, image target link, reddit image host, discord photo hosting">
 
+  <!-- Google Search Console Verification Meta Tag -->
+  <meta name="google-site-verification" content="ihjoW37gTzmEshVOHUNdxKuq4Yj0Zwq0rp4yZm9QGR4" />
+
+  <!-- Favicon Icon -->
+  <link rel="icon" type="image/jpeg" href="https://cdn.jsdelivr.net/gh/arafathossainlimon11/anime-posters/1792256052370_poster.jpg">
+
   <!-- FontAwesome Icons & Google Fonts -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -34,76 +40,100 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
     body { background-color: var(--bg-dark); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
 
-    /* Header & Navigation */
-    header { background: rgba(19, 27, 46, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100; padding: 14px 24px; display: flex; justify-between: space-between; align-items: center; }
-    .logo { font-size: 22px; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 10px; text-decoration: none; }
-    .logo i { color: var(--primary); }
-    .nav-right { display: flex; align-items: center; gap: 15px; }
-    .nav-link { color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 14px; cursor: pointer; transition: 0.2s; }
+    /* Header & Responsive Navigation */
+    header { background: rgba(19, 27, 46, 0.9); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .logo-container { display: flex; align-items: center; gap: 10px; text-decoration: none; cursor: pointer; }
+    .logo-img { height: 42px; width: auto; border-radius: 8px; object-fit: contain; }
+    .nav-right { display: flex; align-items: center; gap: 12px; margin-left: auto; }
+    .nav-link { color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 13px; cursor: pointer; transition: 0.2s; white-space: nowrap; }
     .nav-link:hover, .nav-link.active { color: var(--primary); }
     
-    .btn-auth { background: linear-gradient(135deg, var(--primary), var(--accent)); color: #fff; border: none; padding: 10px 18px; border-radius: 8px; font-weight: 700; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.3s; }
+    .btn-auth { background: linear-gradient(135deg, var(--primary), var(--accent)); color: #fff; border: none; padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: 0.3s; white-space: nowrap; }
     .btn-auth:hover { opacity: 0.9; transform: translateY(-1px); }
-    .user-profile-btn { display: flex; align-items: center; gap: 10px; cursor: pointer; }
-    .user-avatar { width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--primary); }
+    .user-profile-btn { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+    .user-avatar { width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--primary); }
 
     /* Ad Placement Banners */
-    .ad-banner-slot { background: var(--card-bg); border: 1px dashed var(--border-color); border-radius: 10px; text-align: center; padding: 12px; margin: 20px auto; max-width: 900px; width: 100%; min-height: 90px; display: flex; align-items: center; justify-content: center; color: #475569; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+    .ad-banner-slot { background: var(--card-bg); border: 1px dashed var(--border-color); border-radius: 10px; text-align: center; padding: 12px; margin: 15px auto; max-width: 900px; width: 100%; min-height: 90px; display: flex; align-items: center; justify-content: center; color: #475569; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
 
     /* Main Container */
-    .main-container { max-width: 1000px; margin: 0 auto; padding: 20px; width: 100%; flex: 1; }
+    .main-container { max-width: 1000px; margin: 0 auto; padding: 15px; width: 100%; flex: 1; }
 
-    /* Upload Box */
-    .upload-card { background: var(--card-bg); border: 2px dashed #334155; border-radius: 16px; padding: 40px 20px; text-align: center; cursor: pointer; transition: 0.3s; position: relative; overflow: hidden; }
+    /* Info Callout Box for Ad-Gate */
+    .info-callout { background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 12px; padding: 14px 18px; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; font-size: 13px; color: #e2e8f0; line-height: 1.5; }
+    .info-callout i { font-size: 20px; color: var(--primary); flex-shrink: 0; }
+
+    /* Upload Box & Controls */
+    .upload-card { background: var(--card-bg); border: 2px dashed #334155; border-radius: 16px; padding: 35px 20px; text-align: center; cursor: pointer; transition: 0.3s; position: relative; overflow: hidden; }
     .upload-card:hover { border-color: var(--primary); background: rgba(56, 189, 248, 0.03); }
-    .upload-icon { font-size: 48px; color: var(--primary); margin-bottom: 15px; }
-    .upload-title { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
-    .upload-desc { color: var(--text-muted); font-size: 13px; margin-bottom: 20px; }
+    .upload-icon { font-size: 44px; color: var(--primary); margin-bottom: 12px; }
+    .upload-title { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+    .upload-desc { color: var(--text-muted); font-size: 12px; margin-bottom: 18px; }
     #file-input { display: none; }
+
+    /* ImgBB Autodelete Option Control */
+    .autodelete-wrapper { margin-top: 15px; text-align: left; background: #0f172a; padding: 12px 16px; border-radius: 10px; border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+    .autodelete-label { font-size: 12px; font-weight: 700; color: var(--text-muted); display: flex; align-items: center; gap: 6px; }
+    .autodelete-select { background: var(--card-bg); color: var(--text-main); border: 1px solid var(--border-color); padding: 8px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; outline: none; cursor: pointer; }
 
     /* Upload Stats Bar */
     .upload-counter-bar { background: #0f172a; border: 1px solid var(--border-color); border-radius: 10px; padding: 12px 18px; margin-top: 15px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: 600; }
     .counter-badge { background: var(--accent); color: #fff; padding: 4px 10px; border-radius: 20px; font-size: 12px; }
 
     /* Result Output Cards */
-    .result-section { margin-top: 30px; display: none; }
-    .link-group { margin-bottom: 15px; }
-    .link-label { font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; }
+    .result-section { margin-top: 25px; display: none; background: var(--card-bg); padding: 20px; border-radius: 14px; border: 1px solid var(--border-color); }
+    .link-group { margin-bottom: 14px; }
+    .link-label { font-size: 11px; font-weight: 700; color: var(--text-muted); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
     .link-input-wrapper { display: flex; gap: 8px; }
-    .link-input-wrapper input { flex: 1; background: #0f172a; border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; color: #38bdf8; font-size: 13px; outline: none; }
-    .btn-copy { background: var(--border-color); color: #fff; border: none; padding: 0 16px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+    .link-input-wrapper input { flex: 1; background: #0f172a; border: 1px solid var(--border-color); border-radius: 8px; padding: 10px 12px; color: #38bdf8; font-size: 12px; outline: none; }
+    .btn-copy { background: var(--border-color); color: #fff; border: none; padding: 0 14px; border-radius: 8px; font-weight: 600; font-size: 12px; cursor: pointer; transition: 0.2s; white-space: nowrap; }
     .btn-copy:hover { background: var(--primary); }
 
+    /* Viewer Page UI */
+    .viewer-container { text-align: center; margin: 20px 0; }
+    .viewer-img { max-width: 100%; max-height: 75vh; border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 10px 30px rgba(0,0,0,0.5); object-fit: contain; }
+
     /* Gallery Grid (Profile Page) */
-    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 18px; margin-top: 20px; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; margin-top: 20px; }
     .gallery-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden; transition: 0.3s; }
     .gallery-card:hover { transform: translateY(-4px); border-color: var(--primary); }
-    .gallery-thumb { width: 100%; height: 160px; object-fit: cover; background: #000; }
-    .gallery-info { padding: 12px; }
-    .gallery-actions { display: flex; gap: 8px; margin-top: 8px; }
-    .btn-sm { flex: 1; padding: 8px; border-radius: 6px; border: none; font-size: 11px; font-weight: 700; cursor: pointer; }
+    .gallery-thumb { width: 100%; height: 150px; object-fit: cover; background: #000; }
+    .gallery-info { padding: 10px; }
+    .gallery-actions { display: flex; gap: 6px; margin-top: 6px; }
+    .btn-sm { flex: 1; padding: 6px; border-radius: 6px; border: none; font-size: 10px; font-weight: 700; cursor: pointer; }
     .btn-sm-copy { background: var(--primary); color: #fff; }
     .btn-sm-del { background: #ef4444; color: #fff; }
 
     /* Modals & Overlay Locks */
     .modal-overlay { position: fixed; inset: 0; background: rgba(5, 8, 15, 0.95); backdrop-filter: blur(10px); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 20px; }
-    .modal-box { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; max-width: 500px; width: 100%; padding: 30px; text-align: center; position: relative; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); }
-    .close-btn { position: absolute; top: 15px; right: 15px; background: #ef4444; color: #fff; width: 32px; height: 32px; border-radius: 50%; display: none; align-items: center; justify-content: center; cursor: pointer; font-weight: 800; border: none; }
+    .modal-box { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; max-width: 480px; width: 100%; padding: 25px; text-align: center; position: relative; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); }
+    .close-btn { position: absolute; top: 15px; right: 15px; background: #ef4444; color: #fff; width: 30px; height: 30px; border-radius: 50%; display: none; align-items: center; justify-content: center; cursor: pointer; font-weight: 800; border: none; }
 
     /* Gemini AI SEO Section */
-    .ai-seo-box { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 24px; margin-top: 40px; font-size: 13px; line-height: 1.6; color: var(--text-muted); }
-    .ai-seo-box h3 { color: #fff; font-size: 16px; margin-bottom: 10px; }
+    .ai-seo-box { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; margin-top: 30px; font-size: 13px; line-height: 1.6; color: var(--text-muted); }
+    .ai-seo-box h3 { color: #fff; font-size: 15px; margin-bottom: 8px; }
 
     /* Skeleton Loading Spinner */
-    .spinner { display: inline-block; width: 30px; height: 30px; border: 3px solid rgba(255,255,255,.3); border-radius: 50%; border-top-color: var(--primary); animation: spin 1s ease-in-out infinite; }
+    .spinner { display: inline-block; width: 28px; height: 28px; border: 3px solid rgba(255,255,255,.3); border-radius: 50%; border-top-color: var(--primary); animation: spin 1s ease-in-out infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
+    /* Mobile Responsive Optimizations */
+    @media (max-width: 600px) {
+      header { padding: 10px 14px; }
+      .logo-img { height: 34px; }
+      .nav-link { font-size: 12px; }
+      .btn-auth { padding: 6px 10px; font-size: 11px; }
+      .upload-card { padding: 25px 15px; }
+      .autodelete-wrapper { flex-direction: column; align-items: flex-start; }
+      .autodelete-select { width: 100%; }
+    }
+
     /* Footer & SEO */
-    footer { background: var(--card-bg); border-top: 1px solid var(--border-color); padding: 40px 20px 20px 20px; margin-top: 60px; }
-    .footer-content { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; }
-    .footer-section h4 { color: #fff; font-size: 15px; margin-bottom: 12px; }
-    .footer-section p, .footer-section a { color: var(--text-muted); font-size: 13px; text-decoration: none; display: block; margin-bottom: 8px; }
-    .footer-bottom { max-width: 1000px; margin: 30px auto 0 auto; padding-top: 20px; border-top: 1px solid var(--border-color); text-align: center; color: var(--text-muted); font-size: 12px; }
+    footer { background: var(--card-bg); border-top: 1px solid var(--border-color); padding: 35px 20px 20px 20px; margin-top: 50px; }
+    .footer-content { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 25px; }
+    .footer-section h4 { color: #fff; font-size: 14px; margin-bottom: 10px; }
+    .footer-section p, .footer-section a { color: var(--text-muted); font-size: 12px; text-decoration: none; display: block; margin-bottom: 6px; }
+    .footer-bottom { max-width: 1000px; margin: 25px auto 0 auto; padding-top: 15px; border-top: 1px solid var(--border-color); text-align: center; color: var(--text-muted); font-size: 11px; }
   </style>
 </head>
 <body>
@@ -111,10 +141,10 @@
   <!-- Anti-AdBlock Modal Lock -->
   <div id="adblockModal" class="modal-overlay">
     <div class="modal-box">
-      <i class="fa-solid fa-shield-halved" style="font-size:50px; color:#ef4444; margin-bottom:15px;"></i>
-      <h2 style="font-size:22px; margin-bottom:10px;">AdBlocker Detected!</h2>
-      <p style="color:var(--text-muted); font-size:14px; line-height:1.6; margin-bottom:20px;">
-        Our free unlimited storage service is supported by advertisements. Please disable your AdBlocker or Brave Shield to continue using CloudSnap.
+      <i class="fa-solid fa-shield-halved" style="font-size:45px; color:#ef4444; margin-bottom:12px;"></i>
+      <h2 style="font-size:20px; margin-bottom:8px;">AdBlocker Detected!</h2>
+      <p style="color:var(--text-muted); font-size:13px; line-height:1.5; margin-bottom:18px;">
+        Our free unlimited image hosting service is supported by advertisements. Please disable your AdBlocker or Brave Shield to continue using CloudSnap.
       </p>
       <button class="btn-auth" style="width:100%; justify-content:center;" onclick="window.location.reload()">
         <i class="fa-solid fa-rotate-right"></i> I Have Disabled AdBlocker
@@ -126,16 +156,16 @@
   <div id="adGateModal" class="modal-overlay">
     <div class="modal-box">
       <button id="adGateCloseBtn" class="close-btn" onclick="closeAdGate()">✕</button>
-      <i class="fa-solid fa-rectangle-ad" style="font-size:40px; color:var(--primary); margin-bottom:10px;"></i>
-      <h3 style="font-size:18px; margin-bottom:8px;">Sponsor Advertisement</h3>
-      <p style="color:var(--text-muted); font-size:12px; margin-bottom:15px;">Please view the short sponsor video to unlock your direct links and next 5 uploads.</p>
+      <i class="fa-solid fa-rectangle-ad" style="font-size:36px; color:var(--primary); margin-bottom:8px;"></i>
+      <h3 style="font-size:17px; margin-bottom:6px;">Sponsor Advertisement</h3>
+      <p style="color:var(--text-muted); font-size:12px; margin-bottom:12px;">Watch this short 5-second sponsor video to reset your limit and unlock 5 more free uploads!</p>
       
       <!-- Video Ad Unit Slot -->
-      <div id="videoAdContainer" style="background:#000; min-height:220px; border-radius:12px; display:flex; align-items:center; justify-content:center; border:1px solid var(--border-color); margin-bottom:15px;">
-        <span style="color:#64748b; font-size:12px;">[ Outstream Video / Rewarded Sponsor Ad Playing... ]</span>
+      <div id="videoAdContainer" style="background:#000; min-height:200px; border-radius:12px; display:flex; align-items:center; justify-content:center; border:1px solid var(--border-color); margin-bottom:12px;">
+        <span style="color:#64748b; font-size:12px;">[ Sponsor Video Ad Playing... ]</span>
       </div>
 
-      <div id="adTimerText" style="color:var(--primary); font-weight:700; font-size:13px;">
+      <div id="adTimerText" style="color:var(--primary); font-weight:700; font-size:12px;">
         <i class="fa-solid fa-spinner fa-spin"></i> Unlocking links in <span id="timerSec">5</span>s...
       </div>
     </div>
@@ -143,9 +173,10 @@
 
   <!-- Header Navigation -->
   <header>
-    <a href="#" class="logo" onclick="switchView('home')">
-      <i class="fa-solid fa-cloud-arrow-up"></i> CloudSnap
+    <a href="#" class="logo-container" onclick="switchView('home')">
+      <img src="https://cdn.jsdelivr.net/gh/arafathossainlimon11/anime-posters/1792256052370_poster.jpg" alt="CloudSnap Logo" class="logo-img">
     </a>
+
     <div class="nav-right">
       <span class="nav-link active" id="navHome" onclick="switchView('home')">Upload Hub</span>
       <span class="nav-link" id="navProfile" onclick="switchView('profile')">My Gallery</span>
@@ -160,7 +191,7 @@
 
   <!-- Top AdSense Banner Slot -->
   <div class="ad-banner-slot">
-    <span>[ Google AdSense Top Banner Placeholder — 728x90 / Responsive ]</span>
+    <span>[ Google AdSense Top Banner Placeholder — Responsive ]</span>
   </div>
 
   <!-- Main Content Wrapper -->
@@ -168,12 +199,46 @@
     
     <!-- PAGE 1: HOME UPLOAD HUB -->
     <div id="homeView">
+
+      <!-- Informational Callout Box for Users -->
+      <div class="info-callout">
+        <i class="fa-solid fa-circle-info"></i>
+        <div>
+          <b>100% Free Hosting Service:</b> First 5 uploads are completely free. Once you reach 5 uploads, simply watch a quick 5-second sponsor video ad to unlock unlimited uploads again!
+        </div>
+      </div>
+
       <div class="upload-card" onclick="document.getElementById('file-input').click()">
         <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
         <div class="upload-title">Drag & Drop or Click to Upload Images</div>
         <div class="upload-desc">Supports PNG, JPG, JPEG, WEBP & GIF up to 20MB per file.</div>
         <button class="btn-auth" style="margin: 0 auto; pointer-events: none;">Browse Files</button>
         <input type="file" id="file-input" accept="image/*" onchange="handleFileUpload(this.files[0])">
+      </div>
+
+      <!-- ImgBB Style Automatically Delete Image Option -->
+      <div class="autodelete-wrapper">
+        <div class="autodelete-label">
+          <i class="fa-solid fa-clock-rotate-left" style="color:var(--primary);"></i>
+          Automatically delete image:
+        </div>
+        <select id="autoDeleteSelect" class="autodelete-select">
+          <option value="0">Don't autodelete</option>
+          <option value="300">After 5 minutes</option>
+          <option value="900">After 15 minutes</option>
+          <option value="1800">After 30 minutes</option>
+          <option value="3600">After 1 hour</option>
+          <option value="10800">After 3 hours</option>
+          <option value="21600">After 6 hours</option>
+          <option value="43200">After 12 hours</option>
+          <option value="86400">After 1 day</option>
+          <option value="172800">After 2 days</option>
+          <option value="259200">After 3 days</option>
+          <option value="604800">After 1 week</option>
+          <option value="1209600">After 2 weeks</option>
+          <option value="2592000">After 1 month</option>
+          <option value="15552000">After 6 months</option>
+        </select>
       </div>
 
       <!-- Upload Counter Indicator -->
@@ -183,17 +248,25 @@
       </div>
 
       <!-- Loading State Overlay -->
-      <div id="uploadLoader" style="display:none; text-align:center; margin-top:25px;">
+      <div id="uploadLoader" style="display:none; text-align:center; margin-top:20px;">
         <div class="spinner"></div>
-        <p style="margin-top:10px; color:var(--primary); font-weight:600; font-size:14px;">Uploading to Global Cloud CDN...</p>
+        <p style="margin-top:8px; color:var(--primary); font-weight:600; font-size:13px;">Uploading to Global Cloud CDN...</p>
       </div>
 
-      <!-- Result Links Output Area -->
+      <!-- Result Links Output Area (ImgBB Multi-Embed Links) -->
       <div id="resultSection" class="result-section">
-        <h3 style="font-size:16px; margin-bottom:15px; color:#fff;"><i class="fa-solid fa-circle-check" style="color:#10b981;"></i> Image Uploaded Successfully!</h3>
+        <h3 style="font-size:15px; margin-bottom:15px; color:#fff;"><i class="fa-solid fa-circle-check" style="color:#10b981;"></i> Image Uploaded Successfully!</h3>
         
         <div class="link-group">
-          <div class="link-label">Direct Image Link (For Browser & Sharing)</div>
+          <div class="link-label">Viewer Page Link (Recommended for Sharing & Ads)</div>
+          <div class="link-input-wrapper">
+            <input type="text" id="viewerLink" readonly>
+            <button class="btn-copy" onclick="copyToClipboard('viewerLink')">Copy</button>
+          </div>
+        </div>
+
+        <div class="link-group">
+          <div class="link-label">Direct Image Link</div>
           <div class="link-input-wrapper">
             <input type="text" id="directLink" readonly>
             <button class="btn-copy" onclick="copyToClipboard('directLink')">Copy</button>
@@ -201,18 +274,34 @@
         </div>
 
         <div class="link-group">
-          <div class="link-label">HTML Embed Code (For Websites & Blogs)</div>
+          <div class="link-label">HTML Full Image (Linked)</div>
           <div class="link-input-wrapper">
-            <input type="text" id="htmlLink" readonly>
-            <button class="btn-copy" onclick="copyToClipboard('htmlLink')">Copy</button>
+            <input type="text" id="htmlFullLink" readonly>
+            <button class="btn-copy" onclick="copyToClipboard('htmlFullLink')">Copy</button>
           </div>
         </div>
 
         <div class="link-group">
-          <div class="link-label">BBCode (For Online Forums & Communities)</div>
+          <div class="link-label">BBCode Full Image (Linked)</div>
           <div class="link-input-wrapper">
-            <input type="text" id="bbCodeLink" readonly>
-            <button class="btn-copy" onclick="copyToClipboard('bbCodeLink')">Copy</button>
+            <input type="text" id="bbCodeFullLink" readonly>
+            <button class="btn-copy" onclick="copyToClipboard('bbCodeFullLink')">Copy</button>
+          </div>
+        </div>
+
+        <div class="link-group">
+          <div class="link-label">HTML Thumbnail Image (Linked)</div>
+          <div class="link-input-wrapper">
+            <input type="text" id="htmlThumbLink" readonly>
+            <button class="btn-copy" onclick="copyToClipboard('htmlThumbLink')">Copy</button>
+          </div>
+        </div>
+
+        <div class="link-group">
+          <div class="link-label">BBCode Thumbnail Image (Linked)</div>
+          <div class="link-input-wrapper">
+            <input type="text" id="bbCodeThumbLink" readonly>
+            <button class="btn-copy" onclick="copyToClipboard('bbCodeThumbLink')">Copy</button>
           </div>
         </div>
       </div>
@@ -226,11 +315,25 @@
 
     <!-- PAGE 2: PROFILE GALLERY -->
     <div id="profileView" style="display:none;">
-      <h2 style="font-size:20px; font-weight:800; margin-bottom:5px;">My Upload Gallery</h2>
-      <p style="color:var(--text-muted); font-size:13px; margin-bottom:20px;">Manage your stored cloud images and retrieve share links anytime.</p>
+      <h2 style="font-size:18px; font-weight:800; margin-bottom:4px;">My Upload Gallery</h2>
+      <p style="color:var(--text-muted); font-size:12px; margin-bottom:15px;">Manage your stored cloud images and retrieve share links anytime.</p>
       
       <div id="galleryContainer" class="gallery-grid">
         <!-- Dynamic Gallery Cards Load Here -->
+      </div>
+    </div>
+
+    <!-- PAGE 3: IMAGE VIEWER PAGE (In-Browser Image View - No Forced Download) -->
+    <div id="viewerView" style="display:none;">
+      <div class="viewer-container">
+        <div id="viewerExpiredMsg" style="display:none; color:#ef4444; font-weight:700; margin-bottom:15px; background:#0f172a; padding:15px; border-radius:10px;">
+          <i class="fa-solid fa-triangle-exclamation"></i> This image has expired or was deleted according to the uploader's auto-delete timer.
+        </div>
+        <img id="viewerImageElement" class="viewer-img" src="" alt="Hosted Image">
+        <div style="margin-top:20px; display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
+          <button class="btn-auth" onclick="switchView('home')"><i class="fa-solid fa-cloud-arrow-up"></i> Upload Your Own Image</button>
+          <button class="btn-copy" style="padding:10px 18px;" onclick="copyCurrentViewerUrl()"><i class="fa-solid fa-share-nodes"></i> Share Link</button>
+        </div>
       </div>
     </div>
 
@@ -314,7 +417,7 @@
         authContainer.innerHTML = `
           <div class="user-profile-btn" onclick="switchView('profile')">
             <img src="${user.photoURL}" class="user-avatar" alt="Avatar">
-            <span style="font-size:13px; font-weight:700;">${user.displayName.split(' ')[0]}</span>
+            <span style="font-size:12px; font-weight:700;">${user.displayName.split(' ')[0]}</span>
           </div>
         `;
         syncUserCount();
@@ -333,7 +436,7 @@
       auth.signInWithPopup(provider).catch(err => alert("Google Sign-In Error: " + err.message));
     }
 
-    // 5. Anti-AdBlocker Detection
+    // 5. Anti-AdBlocker Detection & Route Handler
     function triggerAdBlockDetector() {
       document.getElementById('adblockModal').style.display = 'flex';
     }
@@ -349,8 +452,15 @@
         }
       }, 1000);
 
-      // Trigger AI SEO
-      fetchGeminiAISEO();
+      // Check URL Query Parameters for Direct Image Viewer
+      const urlParams = new URLSearchParams(window.location.search);
+      const viewData = urlParams.get('v');
+      
+      if (viewData) {
+        renderViewerPage(viewData);
+      } else {
+        fetchGeminiAISEO();
+      }
     });
 
     // 6. Gemini AI Studio Dynamic SEO Engine
@@ -379,7 +489,7 @@
       }
     }
 
-    // 7. Multi-Bot Upload Engine
+    // 7. Multi-Bot Upload Engine & ImgBB Auto-Delete Integration
     async function handleFileUpload(file) {
       if (!file) return;
 
@@ -412,11 +522,26 @@
           const fileData = await fileRes.json();
           const filePath = fileData.result.file_path;
           
-          const directImgUrl = `https://api.telegram.org/file/bot${botToken}/${filePath}`;
+          const rawImgUrl = `https://api.telegram.org/file/bot${botToken}/${filePath}`;
           
-          document.getElementById('directLink').value = directImgUrl;
-          document.getElementById('htmlLink').value = `<img src="${directImgUrl}" alt="Hosted Image" />`;
-          document.getElementById('bbCodeLink').value = `[img]${directImgUrl}[/img]`;
+          // Expiry Calculation
+          const autoDeleteSec = parseInt(document.getElementById('autoDeleteSelect').value);
+          const expireAt = autoDeleteSec > 0 ? Date.now() + (autoDeleteSec * 1000) : 0;
+
+          // Secure Obfuscation (Hides Bot Token from User)
+          const payload = JSON.stringify({ url: rawImgUrl, exp: expireAt });
+          const encodedHash = btoa(encodeURIComponent(payload));
+
+          const baseUrl = window.location.origin + window.location.pathname;
+          const viewerPageUrl = `${baseUrl}?v=${encodedHash}`;
+
+          // Populate All ImgBB Style Embed Codes
+          document.getElementById('viewerLink').value = viewerPageUrl;
+          document.getElementById('directLink').value = rawImgUrl;
+          document.getElementById('htmlFullLink').value = `<a href="${viewerPageUrl}"><img src="${rawImgUrl}" alt="Hosted Image" /></a>`;
+          document.getElementById('bbCodeFullLink').value = `[url=${viewerPageUrl}][img]${rawImgUrl}[/img][/url]`;
+          document.getElementById('htmlThumbLink').value = `<a href="${viewerPageUrl}"><img src="${rawImgUrl}" width="300" alt="Hosted Thumbnail" /></a>`;
+          document.getElementById('bbCodeThumbLink').value = `[url=${viewerPageUrl}][img width=300]${rawImgUrl}[/img][/url]`;
 
           document.getElementById('uploadLoader').style.display = 'none';
           document.getElementById('resultSection').style.display = 'block';
@@ -426,7 +551,9 @@
 
           if (currentUser) {
             db.ref(`galleries/${currentUser.uid}`).push({
-              url: directImgUrl,
+              viewerUrl: viewerPageUrl,
+              directUrl: rawImgUrl,
+              expireAt: expireAt,
               timestamp: Date.now()
             });
           }
@@ -444,7 +571,32 @@
       }
     }
 
-    // 8. DB Counter Sync
+    // 8. Image Viewer Renderer (Solves Download Issue & Expiry Check)
+    function renderViewerPage(hash) {
+      document.getElementById('homeView').style.display = 'none';
+      document.getElementById('profileView').style.display = 'none';
+      document.getElementById('viewerView').style.display = 'block';
+
+      try {
+        const decoded = JSON.parse(decodeURIComponent(atob(hash)));
+        const imgElem = document.getElementById('viewerImageElement');
+        const expiredMsg = document.getElementById('viewerExpiredMsg');
+
+        if (decoded.exp > 0 && Date.now() > decoded.exp) {
+          imgElem.style.display = 'none';
+          expiredMsg.style.display = 'block';
+        } else {
+          imgElem.src = decoded.url;
+          imgElem.style.display = 'inline-block';
+          expiredMsg.style.display = 'none';
+        }
+      } catch(e) {
+        alert("Invalid or Corrupted Image Link!");
+        switchView('home');
+      }
+    }
+
+    // 9. DB Counter Sync
     function syncUserCount() {
       if (!currentUser) return;
       db.ref(`users/${currentUser.uid}/uploadCount`).once('value', snapshot => {
@@ -460,7 +612,7 @@
       }
     }
 
-    // 9. Ad-Gate Lock Trigger
+    // 10. Ad-Gate Lock Trigger
     function triggerAdGate() {
       const modal = document.getElementById('adGateModal');
       const closeBtn = document.getElementById('adGateCloseBtn');
@@ -487,7 +639,7 @@
       updateUploadCountInDB();
     }
 
-    // 10. Profile Gallery Loader
+    // 11. Profile Gallery Loader
     function loadUserGallery() {
       if (!currentUser) return;
       db.ref(`galleries/${currentUser.uid}`).on('value', snapshot => {
@@ -498,13 +650,17 @@
         if (data) {
           Object.keys(data).forEach(key => {
             const item = data[key];
+            const isExpired = item.expireAt > 0 && Date.now() > item.expireAt;
             const card = document.createElement('div');
             card.className = 'gallery-card';
             card.innerHTML = `
-              <img src="${item.url}" class="gallery-thumb" alt="Upload">
+              <img src="${isExpired ? '' : item.directUrl}" class="gallery-thumb" alt="Upload" style="${isExpired ? 'display:none' : ''}">
               <div class="gallery-info">
+                <p style="font-size:11px; color:${isExpired ? '#ef4444' : '#10b981'}; font-weight:700;">
+                  ${isExpired ? 'Expired' : 'Active'}
+                </p>
                 <div class="gallery-actions">
-                  <button class="btn-sm btn-sm-copy" onclick="copyText('${item.url}')">Copy Link</button>
+                  <button class="btn-sm btn-sm-copy" onclick="copyText('${item.viewerUrl}')">Copy Viewer</button>
                   <button class="btn-sm btn-sm-del" onclick="deleteGalleryItem('${key}')">Delete</button>
                 </div>
               </div>
@@ -523,10 +679,14 @@
       }
     }
 
-    // 11. View Switcher & Helpers
+    // 12. View Switcher & Helpers
     function switchView(view) {
+      if (window.location.search) {
+        window.history.pushState({}, document.title, window.location.pathname);
+      }
       document.getElementById('homeView').style.display = view === 'home' ? 'block' : 'none';
       document.getElementById('profileView').style.display = view === 'profile' ? 'block' : 'none';
+      document.getElementById('viewerView').style.display = 'none';
       document.getElementById('navHome').classList.toggle('active', view === 'home');
       document.getElementById('navProfile').classList.toggle('active', view === 'profile');
     }
@@ -541,6 +701,11 @@
     function copyText(text) {
       navigator.clipboard.writeText(text);
       alert('Link copied to clipboard!');
+    }
+
+    function copyCurrentViewerUrl() {
+      navigator.clipboard.writeText(window.location.href);
+      alert('Viewer Link copied to clipboard!');
     }
   </script>
 </body>
